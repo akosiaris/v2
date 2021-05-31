@@ -194,6 +194,10 @@ func (r *rssItem) entryDate() time.Time {
 			logger.Error("rss: %v (entry GUID = %s)", err, r.GUID)
 			return time.Now()
 		}
+		// Ugly as hell but allows us to deal with broken RSS feeds that have a pubDate equal to unix Epoch
+		if result == time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC) {
+			return time.Now()
+		}
 
 		return result
 	}
